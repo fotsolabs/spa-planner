@@ -1,0 +1,96 @@
+@startuml Mdd version 1
+
+left to right direction
+class EmployeeRoute {
+    - employeeService: EmployeeService
+}
+
+class EmployeService {
+    +createEmployee(employee: Employee)
+    +updateEmployee(employee: Employee)
+    +deleteEmployee(employee: Employee)
+    +getEmployees()
+    +getAppointments()
+    +getAppointment(AppointementId: String)
+}
+
+class Employee {
+    - name: string
+    - email: string
+    - password: string
+    - address: string
+    - company: string
+    - Appointments: Appointment[]
+
+    +createAppointment(appointment: Appointment)
+    +cancelAppointment(appointment: Appointment)
+    +updateAppointment(appointment: Appointment)
+    +getAppointments()
+
+}
+
+
+
+class Service {
+    - name: string
+    - description: string
+    - price: float
+    - duration: time
+
+    +updatePrice(price: float)
+    +updateDuration(duration: time)
+}
+
+class AppointmentRoute {
+    - DataBase: DataBase
+    ServiceService: ServiceService
+}
+
+class ServiceService {
+    +createService(service: Service)
+    +updateService(service: Service)
+    +deleteService(service: Service)
+    +getServices()
+}
+
+class Appointment {
+    - id: int
+    - date: date
+    - time: time
+    - location: string
+    - description: string
+    - employee: Employee
+    - service: Service
+
+    +updateDate(date: date)
+    +updateTime(time: time)
+    +updateLocation(location: string)
+    +updateDescription(description: string)
+    +updateService(service: Service)
+    +updateEmployee(employee: Employee)
+
+}
+
+class CompanyRoute {
+    - name: string
+    - address: string
+    - email: string
+    - phone: string
+}
+
+class DataBase {
+    - connectLink: string
+}
+
+EmployeeRoute "1" -- "1" CompanyRoute
+EmployeeRoute "1" -- "1" Employee
+EmployeeRoute "1" *-- "1" EmployeService
+Employee "1" *-- "*..*" Appointment
+Appointment "1" o-- "1" Service
+CompanyRoute "1" -- "1" AppointmentRoute
+Employee "1" -- "1..*" Service
+AppointmentRoute "1" -- "1..*" Appointment
+AppointmentRoute "1" o-- "1..*" ServiceService
+AppointmentRoute "1" o-- "1" DataBase
+
+

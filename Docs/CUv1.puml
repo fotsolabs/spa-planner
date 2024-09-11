@@ -1,0 +1,17 @@
+@startuml usecase diagram version 1
+left to right direction
+actor "User" as user
+rectangle Planner{
+    usecase "Create a new appointment" as create
+    usecase "Edit an appointment" as edit
+    usecase "Delete an appointment" as delete
+    usecase "View all appointments" as view
+    usecase "send receipt" as receipt
+
+}
+user --> create
+user --> edit
+user --> delete
+user --> view
+user --> receipt
+@enduml

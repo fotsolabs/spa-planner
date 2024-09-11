@@ -1,0 +1,40 @@
+@startuml Mdd version 1
+
+class Employee {
+    name: string
+    email: string
+    password: string
+    address: string
+    company: string
+}
+
+class Service {
+    name: string
+    description: string
+    price: float
+    duration: time
+}
+
+class Appointment {
+    id: int
+    date: date
+    time: time
+    location: string
+    description: string
+    status: string
+}
+
+class Company {
+    name: string
+    address: string
+    email: string
+    phone: string
+}
+
+Employee "1" -- "1" Company: works for
+Employee "1" -- "0..*" Appointment: Creates
+Appointment "1" -- "1" Service: has
+Company "1" -- "1..*" Service: offers
+Employee "1" -- "1..*" Service: provides
+
+
