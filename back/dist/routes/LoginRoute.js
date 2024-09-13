@@ -21,7 +21,10 @@ class LoginRoute {
     }
     routes() {
         this.fastify.post('/login', (req, res) => __awaiter(this, void 0, void 0, function* () {
-            res.send({ hello: 'Login' });
+            const body = req.body;
+            const msg = yield this.loginService.login(body);
+            console.log("Route messages ", msg);
+            res.status(200).send(msg);
         }));
     }
 }

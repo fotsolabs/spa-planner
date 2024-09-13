@@ -15,28 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const fastify_1 = __importDefault(require("fastify"));
 const cors_1 = __importDefault(require("@fastify/cors"));
+const jwt_1 = __importDefault(require("@fastify/jwt"));
 const DataBase_1 = __importDefault(require("./DataBase"));
 const LoginRoute_1 = require("./LoginRoute");
-require("dotenv").config({ path: ".env" });
+require('dotenv').config({ path: '.env' });
 class CompanyRoutes {
     constructor() {
         this.databaseUrl = process.env.MONGODB_URL || '';
+        dotenv_1.default.config(); // Ensure environment variables are loaded at the start
         this.fastify = (0, fastify_1.default)({ logger: true });
-        console.log(this.databaseUrl);
         this.dataBase = new DataBase_1.default(this.databaseUrl);
-        this.routes();
-        this.init();
+        this.registerPlugins(); // Register plugins before starting the server
+        this.init(); // Initialize the server
+        this.routes(); // Define routes
+    }
+    getFastify() {
+        return this.fastify;
+    }
+    getDatabase() {
+        return this.dataBase;
     }
     init() {
-        dotenv_1.default.config();
-        this.dataBase.connect();
-        this.fastify.register(cors_1.default, {
-            origin: '*',
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            allowedHeaders: ['Content-Type', 'Authorization'],
-            exposedHeaders: ['Content-Range', 'X-Content-Range'],
-            credentials: true
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.dataBase.connect();
         });
+    }
+    listen() {
         const port = process.env.PORT || 3000;
         this.fastify.listen(port, (err, address) => {
             if (err) {
@@ -44,6 +48,18 @@ class CompanyRoutes {
                 process.exit(1);
             }
             console.log(`Server is running at ${address}`);
+        });
+    }
+    registerPlugins() {
+        this.fastify.register(cors_1.default, {
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            exposedHeaders: ['Content-Range', 'X-Content-Range'],
+            credentials: true
+        });
+        this.fastify.register(jwt_1.default, {
+            secret: process.env.SECRET_KEY || 'supersecret'
         });
     }
     routes() {

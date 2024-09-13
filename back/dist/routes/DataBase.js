@@ -29,5 +29,17 @@ class DataBase {
             }
         });
     }
+    disconnect() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield mongoose_1.default.disconnect();
+                console.log('Database disconnected');
+            }
+            catch (err) {
+                console.error("Database disconnection error:", err);
+                process.exit(1);
+            }
+        });
+    }
 }
 exports.default = DataBase;

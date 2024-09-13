@@ -16,7 +16,7 @@ export default class LoginRoute {
         this.fastify.post('/login', async (req, res) => {
             const body = req.body as { password: string, email: string };
             const msg =  await this.loginService.login(body);
-            console.log("Route messages",msg);
+            console.log("Route messages ",msg);
             res.status(200).send(msg);
         });
     }

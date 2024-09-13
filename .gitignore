@@ -1,0 +1,33 @@
+# Node modules directory
+node_modules/
+
+# Logs
+*.log
+yarn-debug.log*
+yarn-error.log*
+npm-debug.log*
+
+# Environment files
+.env
+.env.*.local
+
+# Build output
+dist/
+build/
+*.tgz
+
+# Dependency directories
+jspm_packages/
+
+# MacOS and Windows system files
+.DS_Store
+Thumbs.db
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Other
+coverage/
+*.test.js
+*.spec.js
