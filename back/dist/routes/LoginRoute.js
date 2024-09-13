@@ -17,7 +17,7 @@ const LoginService_1 = __importDefault(require("../services/LoginService"));
 class LoginRoute {
     constructor(fastify) {
         this.fastify = fastify;
-        this.loginService = new LoginService_1.default();
+        this.loginService = new LoginService_1.default(this.fastify);
     }
     routes() {
         this.fastify.post('/login', (req, res) => __awaiter(this, void 0, void 0, function* () {

@@ -9,7 +9,7 @@ export default class LoginRoute {
 
     constructor(fastify:FastifyInstance) {
         this.fastify = fastify;
-        this.loginService = new LoginService();
+        this.loginService = new LoginService(this.fastify);
     }
 
     public routes() {

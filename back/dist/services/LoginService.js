@@ -15,8 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const UserModel_1 = require("../models/UserModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 class loginService {
-    constructor() {
+    constructor(fastify) {
+        this.fastify = fastify;
     }
+    /**
+     * this
+     * @param body
+     * @returns
+     */
     login(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -34,7 +40,9 @@ class loginService {
                     console.log("Invalid password or email");
                     return { success: false, message: "Invalid password or email" };
                 }
-                return { success: true, message: "Login success", email, photo, employees };
+                // token creation 
+                const token = this.fastify.jwt.sign({ email: body.email });
+                return { success: true, message: "Login success", email, photo, employees, token };
             }
             catch (err) {
                 console.error("Login error:", err);

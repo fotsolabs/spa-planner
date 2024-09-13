@@ -29,6 +29,9 @@ const InputComponent = ({mode}) => {
         if(data.message ==="Invalid password or email"){  // check if the email and password are correct
           setMessage(data.message);
         }
+        else{
+          console.log(data.message);
+        }
        
       }
       else{
