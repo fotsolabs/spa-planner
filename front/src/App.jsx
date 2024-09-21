@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Login mode={mode} setMode={setMode} />} /> <Route path='/dashboard' element={
             <ProtectedRoute>
-              <DashBoard/>
+              <DashBoard mode = {mode} setMode={setMode}/>
             </ProtectedRoute>
           } />
         </Routes>

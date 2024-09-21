@@ -1,8 +1,22 @@
 import React from 'react'
+import LogNav from '../components/LogNav'
+import CalendarComponent from '../components/CalendarComponent'
 
-const DashBoard = () => {
+
+
+const DashBoard = ({mode, setMode}) => {
   return (
-    <div>DashBoard</div>
+    <>
+      <LogNav mode = {mode} setMode={setMode}/>
+      <div className='flex h-full'>
+        <div className='w-28 h-full bg-neutral-600 sticky top-0'></div>
+        <div className='w-screen h-full'>
+        <CalendarComponent />
+          
+        </div>
+      </div>
+      
+    </>
   )
 }
 
