@@ -11,16 +11,14 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 
 
-const CalendarComponent = ({localizer, events}) => {
+const CalendarComponent = ({localizer, events, setEditingEvent,setMyEvents ,handleClickEvent}) => {
 
-    const  adjEvents = events.map(it => ({
-        ...it,
-    }));
 
-    const [myEvents, setMyEvents] = useState(adjEvents);
+    
     const [draggedEvent, setDraggedEvent] = useState();
     const [displayDragItemInCell, setDisplayDragItemCell] = useState(true);
     const [counters, setCounters] = useState({item1: 0, items2: 0});
+    
 
     const eventPropGetter = useCallback(
         (event) => ({
@@ -91,9 +89,9 @@ const CalendarComponent = ({localizer, events}) => {
           newEvent(event)
         },
         [draggedEvent, counters, setDraggedEvent, setCounters, newEvent]
-      )
+    )
 
-      const resizeEvent = useCallback(
+    const resizeEvent = useCallback(
         ({ event, start, end }) => {
           setMyEvents((prev) => {
             const existing = prev.find((ev) => ev.id === event.id) ?? {}
@@ -102,25 +100,27 @@ const CalendarComponent = ({localizer, events}) => {
           })
         },
         [setMyEvents]
-      )
+    )
     
     const defaultDate = useMemo(() => new Date(2025,4,15),[]);
+
+   
 
    
     
     
   return (
-    console.log(myEvents),
+    console.log(events),
     
             <DragAndDropCalendar
                 defaultDate={new Date()}
-                defaultView={Views.MONTH}
+                defaultView={Views.WEEK}
                 dragFromOutsideItem={
                 displayDragItemInCell ? dragFromOutsideItem : null
                 }
                 draggableAccessor="isDraggable"
                 eventPropGetter={eventPropGetter}
-                events={myEvents}
+                events={events}
                 localizer={localizer}
                 onDropFromOutside={onDropFromOutside}
                 onDragOverFromOutside={customOnDragOverFromOutside}
@@ -128,7 +128,7 @@ const CalendarComponent = ({localizer, events}) => {
                 resizable
                 onEventResize={resizeEvent}
                 onSelectSlot={newEvent}
-                
+                onSelectEvent={handleClickEvent}
                 selectable
             />
     )

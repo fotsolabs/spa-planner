@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import LogNav from '../components/LogNav'
 import CalendarComponent from '../components/CalendarComponent'
 import Calendar from '../components/Calendar'
@@ -6,6 +6,7 @@ import TUICalendar from '../components/TUICalendar'
 import { dateFnsLocalizer } from 'react-big-calendar'
 import { format, parse, startOfWeek, getDay } from 'date-fns'
 import enUS from 'date-fns/locale/en-US'; 
+import { EventChangePopUP } from '../components/EventChangePopUP'
 
 const locales = {
   'en-Us': enUS,
@@ -39,15 +40,43 @@ const localizer = dateFnsLocalizer({
 })
 
 const DashBoard = ({mode, setMode}) => {
+  const [editingEvent, setEditingEvent] = useState(null);
+   // Helps to change the title of the event when it is clicked
+   const [myEvents, setMyEvents] = useState(events); 
+   const handleClickEvent = (event) => {
+    setEditingEvent(event);
+    
+  }
   return (
     <>
       <LogNav mode = {mode} setMode={setMode}/>
       <div className='flex h-full'>
         <div className='w-28 h-full bg-neutral-600 sticky top-0'></div>
         <div className='w-screen h-full'>
-        <CalendarComponent localizer={localizer} events={events} />
+        <CalendarComponent 
+          key ={myEvents.length}
+          localizer={localizer}  
+          events={myEvents} 
+          setMyEvents={setMyEvents}
+          setEditingEvent={setEditingEvent} 
+          handleClickEvent={handleClickEvent}
+          />
         </div>
       </div>
+      {/* popUp editing window */}
+    
+      {editingEvent && (
+        <EventChangePopUP
+          id={editingEvent.id}
+          title={editingEvent.title}
+          clientName={editingEvent.clientName}
+          events={myEvents}
+          setMyEvents={setMyEvents}
+          onClose={() => setEditingEvent(null)}
+        />
+      )}
+      
+      
       
     </>
   )
