@@ -1,6 +1,8 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {Calendar,Views,DateLocalizer} from 'react-big-calendar'
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
@@ -103,6 +105,8 @@ const CalendarComponent = ({localizer, events}) => {
       )
     
     const defaultDate = useMemo(() => new Date(2025,4,15),[]);
+
+   
     
     
   return (
@@ -121,9 +125,10 @@ const CalendarComponent = ({localizer, events}) => {
                 onDropFromOutside={onDropFromOutside}
                 onDragOverFromOutside={customOnDragOverFromOutside}
                 onEventDrop={moveEvent}
+                resizable
                 onEventResize={resizeEvent}
                 onSelectSlot={newEvent}
-                resizable
+                
                 selectable
             />
     )
