@@ -17,7 +17,7 @@
     "@fastify/jwt": "^8.0.1",
     "bcrypt": "^5.1.1",
     "fastify": "^4.28.1",
-    "mongoose": "^8.5.3",
+    "mongoose": "^8.9.4",
     "supertest": "^7.0.0"
   },
   "devDependencies": {
