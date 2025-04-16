@@ -1,4 +1,5 @@
 import { dark } from '@mui/material/styles/createPalette';
+import { set } from 'date-fns';
 
 
 
@@ -12,6 +13,9 @@ export default {
         lightMode: '#fff',
         ligtText: '#fff',
         darkText: '#000',
+        stickyBarBg: '#d9f0e2',
+        settingsBg: '#fafaf2',
+        creamyGreen: '#4d7c6f'
       },
     },
   },

@@ -6,7 +6,6 @@ import { LightMode } from '@mui/icons-material';
 
 
 const LogNav = ({mode, setMode}) => {
-  console.log(mode)
   return (
     <div className={`flex justify-between items-center ml-3 mr-3 border-solid border-b-2 border-gray-200 p-3 shadow-lg ${mode === 'lightMode' ? 'bg-lightMode' : 'bg-darkScreen'} ${mode ==='darkScreen' ? 'text-ligtText' : 'text-darkText'}`}>
 

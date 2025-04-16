@@ -7,6 +7,9 @@ import { dateFnsLocalizer } from 'react-big-calendar'
 import { format, parse, startOfWeek, getDay } from 'date-fns'
 import enUS from 'date-fns/locale/en-US'; 
 import { EventChangePopUP } from '../components/EventChangePopUP'
+import StickyBar from '../components/StickyBar'
+import { FaCog } from 'react-icons/fa'; // Font Awesome Gear Icon
+import { Link } from 'react-router-dom';
 
 const locales = {
   'en-Us': enUS,
@@ -55,7 +58,20 @@ const DashBoard = ({mode, setMode}) => {
     <>
       <LogNav mode = {mode} setMode={setMode}/>
       <div className='flex h-full'>
-        <div className='w-28 h-full bg-neutral-600 sticky top-0'></div>
+        {/* StickyBar  */}
+        <StickyBar>
+          {/* photo */}
+          <div className=' bg-white w-6 h-5 rounded-full p-9 m-4 shadow-xs'>
+
+          </div>
+          {/* settings */}
+          <div className='flex justify-center items-center p-9 bg-red-400'>
+              <Link to="/settings">
+                  <FaCog size={35} color="blue"/>
+              </Link>
+          </div>
+        </StickyBar>
+        {/* Calendar component */}
         <div className='w-screen h-full'>
         <CalendarComponent 
           key ={myEvents.length}
@@ -64,7 +80,7 @@ const DashBoard = ({mode, setMode}) => {
           setMyEvents={setMyEvents}
           setEditingEvent={setEditingEvent} 
           handleClickEvent={handleClickEvent}
-          />
+        />
         </div>
       </div>
       {/* popUp editing window */}
