@@ -15,19 +15,23 @@ const date = new Date();
 const events = [
   {
     id: 1,
-    title: 'Kickoff Meeting',
+    title: 'Cleaning Service',
     start: new Date(2025, 3, 15, 13, 50),
     end: new Date(2025, 3, 15, 16, 0),
     allDay: false,
     isDraggable: true,
+    clientName: 'John Doe',
+    price : 100,
   },
   {
     id: 2,
-    title: 'Lunch Break',
+    title: 'Massage',
     start: new Date(2025, 3, 15, 12, 0),
     end: new Date(2025, 3, 15, 13, 0),
     allDay: false,
     isDraggable: true,
+    clientName: 'Jane Smith',
+    price : 150,
   },
 ];
 

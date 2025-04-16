@@ -110,7 +110,6 @@ const CalendarComponent = ({localizer, events, setEditingEvent,setMyEvents ,hand
     
     
   return (
-    console.log(events),
     
             <DragAndDropCalendar
                 defaultDate={new Date()}
@@ -130,6 +129,16 @@ const CalendarComponent = ({localizer, events, setEditingEvent,setMyEvents ,hand
                 onSelectSlot={newEvent}
                 onSelectEvent={handleClickEvent}
                 selectable
+                // displays the service and the price  
+                components={{
+                    event: ({event}) => (
+                        <div>
+                            <strong>{event.clientName}</strong>
+                            <div>{event.title}</div>
+                            <div>${event.price}</div>
+                        </div>
+                    ),
+                }}
             />
     )
 }
