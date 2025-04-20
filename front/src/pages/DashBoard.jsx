@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
 import LogNav from '../components/LogNav'
 import CalendarComponent from '../components/CalendarComponent'
-import Calendar from '../components/Calendar'
-import TUICalendar from '../components/TUICalendar'
+
 import { dateFnsLocalizer } from 'react-big-calendar'
 import { format, parse, startOfWeek, getDay } from 'date-fns'
 import enUS from 'date-fns/locale/en-US'; 
@@ -59,7 +58,7 @@ const DashBoard = ({mode, setMode}) => {
       <LogNav mode = {mode} setMode={setMode}/>
       <div className='flex h-full'>
         {/* StickyBar  */}
-        <StickyBar>
+        <StickyBar bgColor={"bg-stickyBarBg"}>
           {/* photo */}
           <div className=' bg-white w-6 h-5 rounded-full p-9 m-4 shadow-xs'>
 

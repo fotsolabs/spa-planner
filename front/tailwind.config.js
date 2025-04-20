@@ -17,8 +17,17 @@ export default {
         settingsBg: '#fafaf2',
         creamyGreen: '#4d7c6f'
       },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        dm: ['"DM Sans"', 'sans-serif'],  
+        poppins: ['Poppins', 'sans-serif'],
+        quicksand: ['"Quicksand"', 'sans-serif'],
+        playfair: ['"Playfair Display"', 'serif'],
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+  ],
 }
 
