@@ -19,7 +19,7 @@ const events = [
     id: 1,
     title: 'Cleaning Service',
     start: new Date(2025, 3, 15, 13, 50),
-    end: new Date(2025, 3, 15, 16, 0),
+    end: new Date(2025, 1, 15, 16, 0),
     allDay: false,
     isDraggable: true,
     clientName: 'John Doe',

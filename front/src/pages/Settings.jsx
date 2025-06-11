@@ -17,6 +17,7 @@ import AddServiceComponent from '../components/addServiceComponent';
     const divRefs = useRef([]);
     const [selectedIndex, setSelectedIndex] = useState(1);
     const [selected, setSelected] = useState('Service & Pricing');
+    const [showModal, setShowModal] = useState(false);
     
 
     const tabContent = [
@@ -44,6 +45,7 @@ import AddServiceComponent from '../components/addServiceComponent';
             price:"50",
             category:"Massage",
         },
+       
     ]
 
     const [content, setContent] = useState(tabContent);
@@ -125,6 +127,7 @@ import AddServiceComponent from '../components/addServiceComponent';
                                     px-3 sm:px-4 md:px-6 lg:px-8
                                     py-1 sm:py-1.5 md:py-2 lg:py-2
                                     "
+                                    onClick={() => setShowModal(true)}
                                 >
                                     <FaPlus className="text-xs sm:text-sm md:text-base lg:text-lg" />
                                     {contentMap[selected]}
@@ -132,6 +135,15 @@ import AddServiceComponent from '../components/addServiceComponent';
                                 )}
                             </>
                         )}
+                        {showModal && (
+                            <AddServiceComponent 
+                                setShowModal={setShowModal} 
+                                setContent={setContent} 
+                                content={content}
+                                setModal={setShowModal}
+                            />
+                        )}
+                     
                 </div>
                 
                 {selected === "Service & Pricing" && 
@@ -179,7 +191,7 @@ import AddServiceComponent from '../components/addServiceComponent';
 
                             
             </div>
-            <AddServiceComponent content={content} />
+            
         </div>
         
     </div>

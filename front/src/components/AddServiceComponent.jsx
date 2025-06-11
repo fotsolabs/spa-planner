@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddServiceComponent = ({ content, setContent }) => {
+const AddServiceComponent = ({ content, setContent, setModal }) => {
   // State to store the form data
   const [serviceName, setServiceName] = useState('');
   const [duration, setDuration] = useState(10);  // default duration (in minutes)
@@ -27,10 +27,18 @@ const AddServiceComponent = ({ content, setContent }) => {
     setDuration(10);
     setPrice('');
     setCategory('');
+    setModal(false);  // Close the modal after adding the service
   };
 
+  const addService = () => {
+    content = [ ...content, {
+      
+    }]
+    setShowModal(false)
+  }
+
   return (
-    <div className='h-full flex justify-center items-center bg-slate-500'>
+    <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-40 z-50'>
       <div className='bg-white p-8 rounded-lg shadow-lg max-w-md w-full'>
         <h2 className='text-center text-2xl font-semibold mb-6'>Add New Service</h2>
         
@@ -100,6 +108,7 @@ const AddServiceComponent = ({ content, setContent }) => {
             <button
               type="submit"
               className="w-full bg-creamyGreen text-white py-3 rounded-lg text-lg font-medium hover:bg-creamyGreenDark transition-colors"
+              onClick={() => setShowModal(false)}
             >
               Add Service
             </button>
