@@ -11,44 +11,49 @@ import TitleComponent from '../components/TitleComponent';
 import SlideBarComponent from '../components/SlideBarComponent';
 import { FiEdit2 } from "react-icons/fi";
 import { PiTrashSimpleLight } from "react-icons/pi";
-import AddServiceComponent from '../components/addServiceComponent';
+import AddServiceComponent from '../components/AddServiceComponent';
+import EditServiceComponent from '../components/EditServiceComponent';
 
  const Settings = ({mode, setMode, bgColor}) => {
-    const divRefs = useRef([]);
-    const [selectedIndex, setSelectedIndex] = useState(1);
-    const [selected, setSelected] = useState('Service & Pricing');
-    const [showModal, setShowModal] = useState(false);
-    
 
     const tabContent = [
         {
             serviceName:"Swedish massage",
-            duration:"60 min",
+            duration:"60",
             price:"50",
             category:"Massage",
         },
         {
             serviceName:"Deep tissue massage",
-            duration:"60 min",
+            duration:"60",
             price:"50",
             category:"Massage",
         },
         {
             serviceName:"Hot stone massage",
-            duration:"60 min",
+            duration:"60",
             price:"50",
             category:"Massage",
         },
         {
             serviceName:"Swedish massage",
-            duration:"60 min",
+            duration:"60",
             price:"50",
             category:"Massage",
-        },
-       
+        }, 
     ]
-
+    const divRefs = useRef([]);
+    const [selectedIndex, setSelectedIndex] = useState(1);
+    const [selected, setSelected] = useState('Service & Pricing');
+    const [showModal, setShowModal] = useState(false);
     const [content, setContent] = useState(tabContent);
+    const [editIndex, setEditIndex] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    
+
+    
+
+    
 
     const contentMap = 
     {
@@ -72,6 +77,10 @@ import AddServiceComponent from '../components/addServiceComponent';
             divRefs.current[index].classList.add('border-creamyGreen', 'text-creamyGreen');
         }
         setSelectedIndex(index);
+    }
+
+    const deleteService = (index) => {
+        setContent(prev => prev.filter((_, i) => i !== index));
     }
   return (
     
@@ -141,6 +150,10 @@ import AddServiceComponent from '../components/addServiceComponent';
                                 setContent={setContent} 
                                 content={content}
                                 setModal={setShowModal}
+                                isEditing={isEditing}
+                                setIsEditing={setIsEditing}
+                                setEditIndex={setEditIndex}
+                                editIndex={editIndex}
                             />
                         )}
                      
@@ -162,18 +175,26 @@ import AddServiceComponent from '../components/addServiceComponent';
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-100">
-                                    {tabContent.map((item, index) => (
+                                    {content.map((item, index) => (
                                     <tr key={index} className="hover:bg-gray-50 transition-all">
                                         <td className="px-4 py-3">{item.serviceName}</td>
-                                        <td className="px-4 py-3">{item.duration}</td>
+                                        <td className="px-4 py-3">{item.duration + "min"}</td>
                                         <td className="px-4 py-3">${item.price}</td>
                                         <td className="px-4 py-3">{item.category}</td>
                                         <td className="px-4 py-3">
                                         <div className="flex gap-3 items-center">
                                             <button className="text-blue-600 hover:text-blue-800">
-                                            <FiEdit2 size={18} />
+                                            <FiEdit2 size={18}
+                                            onClick={() => {
+                                                setEditIndex(index);
+                                                setIsEditing(true);
+                                                setShowModal(true); }}
+                                             />
                                             </button>
-                                            <button className="text-red-600 hover:text-red-800">
+                                            <button 
+                                            className="text-red-600 hover:text-red-800"
+                                            onClick={() => deleteService(index)}
+                                            >
                                             <PiTrashSimpleLight size={18} />
                                             </button>
                                         </div>
@@ -187,8 +208,6 @@ import AddServiceComponent from '../components/addServiceComponent';
                         </div>
                     )
                 }
-
-
                             
             </div>
             

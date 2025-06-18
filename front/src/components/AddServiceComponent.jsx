@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
-const AddServiceComponent = ({ content, setContent, setModal }) => {
+const AddServiceComponent = ({ content, setContent, setModal,isEditing,editIndex,setIsEditing,setEditIndex }) => {
   // State to store the form data
   const [serviceName, setServiceName] = useState('');
   const [duration, setDuration] = useState(10);  // default duration (in minutes)
@@ -14,28 +14,37 @@ const AddServiceComponent = ({ content, setContent, setModal }) => {
     // Create a new service object
     const newService = {
       serviceName,
-      duration,
+      duration: duration,  // Append " min" to the duration
       price,
       category,
     };
 
-    // Add the new service to the content list
-    setContent([...content, newService]);
+    if (isEditing && editIndex !== null) {
+      const updated = [...content];
+      updated[editIndex] = newService;
+      setContent(updated);
+    } else {
+      setContent(prev => [...prev, newService]);
+    }
+  
+    // Reset
+    setModal(false);
+    setIsEditing(false);
+    setEditIndex(null);  // Close the modal after adding the service
 
-    // Optionally, reset the form fields after submission
-    setServiceName('');
-    setDuration(10);
-    setPrice('');
-    setCategory('');
-    setModal(false);  // Close the modal after adding the service
   };
 
-  const addService = () => {
-    content = [ ...content, {
-      
-    }]
-    setShowModal(false)
-  }
+  useEffect(() => {
+    if(isEditing && editIndex !== null) {
+      const serviceToEdit = content[editIndex];
+      setServiceName(serviceToEdit.serviceName);
+      setDuration(serviceToEdit.duration);
+      setPrice(serviceToEdit.price);
+      setCategory(serviceToEdit.category);
+    }
+  }, [isEditing, editIndex]);
+
+  
 
   return (
     <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-40 z-50'>
@@ -63,7 +72,7 @@ const AddServiceComponent = ({ content, setContent, setModal }) => {
               id="hours"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-creamyGreen"
               value={duration}
-              onChange={(e) => setDuration(e.target.value)}
+              onChange={(e) => setDuration(e.target.value)}  // Ensure value is a string
             >
               {Array.from({ length: (120 - 10) / 5 + 1 }, (_, i) => {
                 const value = 10 + i * 5;
@@ -72,7 +81,7 @@ const AddServiceComponent = ({ content, setContent, setModal }) => {
                 const formattedValue = `${hours ? `${hours}h ` : ''}${minutes ? `${minutes}m` : ''}`; // Format as "Xh Ym"
                 return (
                   <option key={value} value={value}>
-                    {formattedValue}
+                    {formattedValue }
                   </option>
                 );
               })}
@@ -107,9 +116,7 @@ const AddServiceComponent = ({ content, setContent, setModal }) => {
           <div className='flex justify-center'>
             <button
               type="submit"
-              className="w-full bg-creamyGreen text-white py-3 rounded-lg text-lg font-medium hover:bg-creamyGreenDark transition-colors"
-              onClick={() => setShowModal(false)}
-            >
+              className="w-full bg-creamyGreen text-white py-3 rounded-lg text-lg font-medium hover:bg-creamyGreenDark transition-colors">
               Add Service
             </button>
           </div>

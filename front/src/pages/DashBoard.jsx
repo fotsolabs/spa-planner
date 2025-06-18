@@ -28,8 +28,8 @@ const events = [
   {
     id: 2,
     title: 'Massage',
-    start: new Date(2025, 3, 15, 12, 0),
-    end: new Date(2025, 3, 15, 13, 0),
+    start: new Date(2025, 5, 18, 10, 0),
+    end: new Date(2025, 5, 18, 19, 0),
     allDay: false,
     isDraggable: true,
     clientName: 'Jane Smith',
