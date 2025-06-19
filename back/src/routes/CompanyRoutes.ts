@@ -4,7 +4,7 @@ import fastifyCors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
 import DataBase from './DataBase';
 import { loginRoutePlugin } from './LoginRoute';
-
+import { serviceRoutePlugin } from './ServiceRoutes';
 require('dotenv').config({ path: '.env' });
 
 export default class CompanyRoutes {
@@ -63,5 +63,6 @@ export default class CompanyRoutes {
             res.send({ hello: 'world' });
         });
         this.fastify.register(loginRoutePlugin, { prefix: '/api/v1' });
+        this.fastify.register(serviceRoutePlugin, { prefix: '/api/v1' });
     }
 }
