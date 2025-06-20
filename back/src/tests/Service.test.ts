@@ -37,7 +37,6 @@ describe('CompanyRoutes',  () => {
             }
         });
         expect(response.statusCode).toBe(200); // Check if the status code is 200
-        
 
     })
 
