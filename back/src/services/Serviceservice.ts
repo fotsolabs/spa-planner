@@ -2,6 +2,7 @@ import {IserviceModel,ServiceModel} from "../models/ServiceModel";
 import { FastifyInstance } from "fastify";
 
 export default class Serviceservice {
+    
    
     private fastify: FastifyInstance;
 
@@ -39,14 +40,42 @@ export default class Serviceservice {
             price: body.price,
             duration: body.duration,
           });
+
+          const existingService = await ServiceModel.findOne() // check if service already exists
+          if(!existingService) {
+            await service.save(); // wait for save to finish
       
-          await service.save(); // wait for save to finish
-      
-          return { success: true, message: "Service added successfully" };
+            return { success: true, message: "Service added successfully" };
+          }
+            return { success: false, message: "Service already exists" };
+          
         } catch (error) {
           console.error("Error saving service:", error);
           return { success: false, message: "Failed to add service" };
         }
-      }
+    }
+
+    public async deleteService(body: { serviceName: string; category: string; price: number; duration: string; }): Promise<{ success: boolean; message: string }> {
+        try {
+            const service = new ServiceModel({
+                serviceName: body.serviceName,
+                category: body.category,
+                price: body.price,
+                duration: body.duration
+            });
+
+            const existingService = await ServiceModel.findOne()
+            if(!existingService) {
+                return { success: false, message: "Service already exists" };
+            }
+            await ServiceModel.deleteOne()
+            return { success: true, message: "Service deleted successfully" };
+        }
+        catch (error) {
+            console.error("Error deleting service:", error);
+            return { success: false, message: "Failed to delete service" };
+        }
+        
+    }
       
 }

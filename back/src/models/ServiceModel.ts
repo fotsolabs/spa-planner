@@ -11,7 +11,7 @@ const ServiceSchema = new Schema(
     {
         serviceName: { 
             type: String, 
-            required: true 
+            required: true,
         },
         duration: { 
             type: String, 
@@ -23,10 +23,12 @@ const ServiceSchema = new Schema(
         },
         category: { 
             type: String, 
-            required: true 
+            required: true, 
+            
         }
     })
 
+ServiceSchema.index({ serviceName: 1, category: 1 }, { unique: true });
 const ServiceModel = mongoose.model<IserviceModel>('Service', ServiceSchema);
 
 export { ServiceModel, IserviceModel };

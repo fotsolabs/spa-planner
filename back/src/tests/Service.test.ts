@@ -1,5 +1,6 @@
 import {FastifyInstance} from 'fastify';
 import CompanyRoutes from '../routes/CompanyRoutes';
+import { after } from 'node:test';
 
 
 
@@ -11,6 +12,12 @@ beforeAll(async () => {
     fastify = companyRoutes.getFastify();
     //await fastify.ready(); // Ensure the Fastify instance is ready before running tests
 });
+
+
+afterAll(async () => {
+    await companyRoutes.getDatabase().disconnect(); // Disconnect from the database after all tests are done
+    fastify.close();
+})
 
 
 
@@ -33,6 +40,21 @@ describe('CompanyRoutes',  () => {
                 serviceName: 'Belgian Massage',
                 category: 'Massage',
                 price: 100,
+                duration: '60'
+            }
+        });
+        expect(response.statusCode).toBe(200); // Check if the status code is 200
+
+    })
+
+    it('should delete the specific service', async () => {
+        const response = await fastify.inject({
+            method: 'DELETE',
+            url: '/api/v1/service',
+            payload: {
+                serviceName: 'Belgian Massage',
+                category: 'Massage',
+                price:100,
                 duration: '60'
             }
         });

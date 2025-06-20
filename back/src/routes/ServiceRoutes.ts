@@ -20,11 +20,18 @@ export default class ServiceRoutes {
         });
 
         this.fastify.put('/service', async (req, res) => {
-            const body = req.body as { serviceName: string, category: string, price: number, duration: string };
+            const body =  req.body as { serviceName: string, category: string, price: number, duration: string };
             const msg = await this.serviceService.addService(body);
             console.log("Route messages ", msg);
             res.status(200).send(msg);
         });
+
+        this.fastify.delete('/service', async (req, res) => { 
+            const body = req.body as { serviceName: string, category: string, price: number, duration: string };
+            const msg = await this.serviceService.deleteService(body);
+            console.log("Route messages ", msg);
+            res.status(200).send(msg);
+        })
     }
 
    
