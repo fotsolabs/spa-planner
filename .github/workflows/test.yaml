@@ -20,7 +20,11 @@ jobs:
           node-version: 20 # or your current Node.js version
 
       - name: 📦 Install dependencies
-        run: npm install
+        run: |
+          cd back 
+          npm install
 
-      - name: 🧪 Run tests
-        run: npm test
+      - name: 🧪 Run backend tests
+        run: |
+          cd back
+          npm test
