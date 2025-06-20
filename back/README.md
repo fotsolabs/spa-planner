@@ -7,6 +7,11 @@
 - create a use case diagram
 - create an MDD
 
+## Front
+- implement Dashboard
+- [X] implement setting page
+    - [X] implement service.
+
 
 ### Docs
 - [x] Create a Use case diagram  
