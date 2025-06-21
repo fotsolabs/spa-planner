@@ -37,7 +37,8 @@ const BASE_URL = 'http://localhost:3000/api/v1';
         });
         if (!response.ok) {
             throw new Error(`Error deleting service: ${response.statusText}`);
-        }
+        } 
+        return response
     }
 
 

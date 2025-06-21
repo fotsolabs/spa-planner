@@ -61,7 +61,7 @@ describe('CompanyRoutes', () => {
         });
         expect(response.statusCode).toBe(200);
         expect(response.json().message).toBeDefined();
-        console.log("Chinese Massage " + response.json().message);
+        
     });
 
     it('should add Cameroon Massage service via PUT', async () => {
@@ -89,6 +89,7 @@ describe('CompanyRoutes', () => {
             }
         });
         expect(response.statusCode).toBe(200);
+        console.log("Belgian Massage " + response.json().success);
     });
 });
 

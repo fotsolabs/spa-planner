@@ -19,38 +19,12 @@ import { set } from 'mongoose';
 
  const Settings = ({mode, setMode, bgColor}) => {
 
-    const tabContent = [
-        {
-            serviceName:"Swedish massage",
-            duration:"60",
-            price:"50",
-            category:"Massage",
-        },
-        {
-            serviceName:"Deep tissue massage",
-            duration:"60",
-            price:"50",
-            category:"Massage",
-        },
-        {
-            serviceName:"Hot stone massage",
-            duration:"60",
-            price:"50",
-            category:"Massage",
-        },
-        {
-            serviceName:"Swedish massage",
-            duration:"60",
-            price:"50",
-            category:"Massage",
-        }, 
-    ]
+
     const [services , setServices] = useState([]);  
 
     useEffect(() => {
         ServiceApi.getAllServices()
         .then((data) => {
-            console.log("Services fetched successfully:", data);
             setServices(data.services);
            
         })
@@ -63,7 +37,7 @@ import { set } from 'mongoose';
     const [selectedIndex, setSelectedIndex] = useState(1);
     const [selected, setSelected] = useState('Service & Pricing');
     const [showModal, setShowModal] = useState(false);
-    const [content, setContent] = useState(tabContent);
+    
     const [editIndex, setEditIndex] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     
@@ -96,8 +70,25 @@ import { set } from 'mongoose';
         setSelectedIndex(index);
     }
 
-    const deleteService = (index) => {
-        setContent(prev => prev.filter((_, i) => i !== index));
+    const deleteService =  async (index,service) => {
+        try{
+            const response =  await ServiceApi.deleteService(service);
+            console.log("Response from deleteService:", response.message);
+            if(response.ok){
+                setServices(prev => prev.filter((_, i) => i !== index));
+
+            }
+            else{
+                console.error("Failed to delete service:", response.message);
+                alert("Failed to delete service. Please try again.");
+
+            }
+        }catch (error) {
+            console.error("Error deleting service:", error);
+            alert("An error occurred while deleting the service.");
+        }
+        
+        
     }
   return (
     
@@ -164,7 +155,7 @@ import { set } from 'mongoose';
                         {showModal && (
                             <AddServiceComponent 
                                 setShowModal={setShowModal} 
-                                setContent={setContent} 
+                                setContent={setServices} 
                                 content={services}
                                 setModal={setShowModal}
                                 isEditing={isEditing}
@@ -210,7 +201,7 @@ import { set } from 'mongoose';
                                             </button>
                                             <button 
                                             className="text-red-600 hover:text-red-800"
-                                            onClick={() => deleteService(index)}
+                                            onClick={() => deleteService(index,{serviceName: item.serviceName, duration: item.duration, price: item.price, category: item.category})}
                                             >
                                             <PiTrashSimpleLight size={18} />
                                             </button>

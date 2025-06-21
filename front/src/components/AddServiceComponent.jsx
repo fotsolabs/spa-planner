@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from 'react';
+import ServiceApi from '../api/ServiceApi';
 
 const AddServiceComponent = ({ content, setContent, setModal,isEditing,editIndex,setIsEditing,setEditIndex }) => {
   // State to store the form data
@@ -31,6 +32,15 @@ const AddServiceComponent = ({ content, setContent, setModal,isEditing,editIndex
     setModal(false);
     setIsEditing(false);
     setEditIndex(null);  // Close the modal after adding the service
+
+    ServiceApi.addService(newService)
+    .then((data) => {
+      console.log(data.message);
+    })
+    .catch((error) => {
+      console.error("Error adding service:", error);
+    });
+  
 
   };
 

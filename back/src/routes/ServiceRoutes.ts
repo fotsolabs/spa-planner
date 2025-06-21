@@ -28,7 +28,6 @@ export default class ServiceRoutes {
         this.fastify.delete('/service', async (req, res) => { 
             const body = req.body as { serviceName: string, category: string, price: number, duration: string };
             const msg = await this.serviceService.deleteService(body);
-            
             res.status(200).send(msg);
         })
     }
