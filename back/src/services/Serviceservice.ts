@@ -41,7 +41,11 @@ export default class Serviceservice {
             duration: body.duration,
           });
 
-          const existingService = await ServiceModel.findOne() // check if service already exists
+          const existingService = await ServiceModel.findOne(
+            {   
+                serviceName:body.serviceName,
+                category: body.category,
+            }) // check if service already exists
           if(!existingService) {
             await service.save(); // wait for save to finish
       
@@ -64,7 +68,11 @@ export default class Serviceservice {
                 duration: body.duration
             });
 
-            const existingService = await ServiceModel.findOne()
+            const existingService = await ServiceModel.findOne(
+                {   
+                    serviceName:body.serviceName,
+                    category: body.category,
+                })
             if(!existingService) {
                 return { success: false, message: "Service already exists" };
             }

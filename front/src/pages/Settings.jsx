@@ -1,4 +1,4 @@
-import React, {useState,useRef} from 'react'
+import React, {useState,useRef,useEffect} from 'react'
 import LogNav from '../components/LogNav'
 import StickyBar from '../components/StickyBar'
 import { GiStoneStack, } from 'react-icons/gi';
@@ -13,6 +13,9 @@ import { FiEdit2 } from "react-icons/fi";
 import { PiTrashSimpleLight } from "react-icons/pi";
 import AddServiceComponent from '../components/AddServiceComponent';
 import EditServiceComponent from '../components/EditServiceComponent';
+import  ServiceApi from '../api/ServiceApi';
+
+import { set } from 'mongoose';
 
  const Settings = ({mode, setMode, bgColor}) => {
 
@@ -42,6 +45,20 @@ import EditServiceComponent from '../components/EditServiceComponent';
             category:"Massage",
         }, 
     ]
+    const [services , setServices] = useState([]);  
+
+    useEffect(() => {
+        ServiceApi.getAllServices()
+        .then((data) => {
+            console.log("Services fetched successfully:", data);
+            setServices(data.services);
+           
+        })
+        .catch((error) => {
+            console.error("Error fetching services:", error);
+        });
+    }, []);
+
     const divRefs = useRef([]);
     const [selectedIndex, setSelectedIndex] = useState(1);
     const [selected, setSelected] = useState('Service & Pricing');
@@ -148,7 +165,7 @@ import EditServiceComponent from '../components/EditServiceComponent';
                             <AddServiceComponent 
                                 setShowModal={setShowModal} 
                                 setContent={setContent} 
-                                content={content}
+                                content={services}
                                 setModal={setShowModal}
                                 isEditing={isEditing}
                                 setIsEditing={setIsEditing}
@@ -175,7 +192,7 @@ import EditServiceComponent from '../components/EditServiceComponent';
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-100">
-                                    {content.map((item, index) => (
+                                    {services.map((item, index) => (
                                     <tr key={index} className="hover:bg-gray-50 transition-all">
                                         <td className="px-4 py-3">{item.serviceName}</td>
                                         <td className="px-4 py-3">{item.duration + "min"}</td>
