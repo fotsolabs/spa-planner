@@ -14,6 +14,7 @@ import { PiTrashSimpleLight } from "react-icons/pi";
 import AddServiceComponent from '../components/AddServiceComponent';
 import EditServiceComponent from '../components/EditServiceComponent';
 import  ServiceApi from '../api/ServiceApi';
+import AddEmployeeComponent from '../components/AddEmployeeComponent';
 
 import { set } from 'mongoose';
 
@@ -33,15 +34,80 @@ import { set } from 'mongoose';
         });
     }, []);
 
+    const employeesContent = [
+        {   
+            photo: 'https://via.placeholder.com/50',
+            fullName: 'John Doe',
+            email:'fotsoguiffo8@gmail.com',
+            phone: '123-456-7890'
+
+        },
+        {   
+            photo: 'https://via.placeholder.com/50',
+            fullName: 'Jessica Smith',
+            email:'fotsoguiffo8@gmail.com',
+            phone: '123-456-7890'
+
+        },
+        {   
+            photo: 'https://via.placeholder.com/50',
+            fullName: 'paul Johnson',
+            email:'paul@gmail.com',
+            phone: '123-456-7890'
+
+        },
+
+    ]
+
+    const [employees, setEmployees] = useState(employeesContent);
+
     const divRefs = useRef([]);
     const [selectedIndex, setSelectedIndex] = useState(1);
     const [selected, setSelected] = useState('Service & Pricing');
     const [showModal, setShowModal] = useState(false);
+    const [showEmployeeModal, setShowEmployeeModal] = useState(false);
     
     const [editIndex, setEditIndex] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     
 
+    const renderModal = () => {
+        if (showEmployeeModal) {
+            return <AddEmployeeComponent 
+                setShowEmpModal={setShowEmployeeModal} 
+                employees={employees} 
+                setEmployees={setEmployees} 
+            />;
+        }
+        if (showModal) {
+            return (
+                <AddServiceComponent
+                    setShowModal={setShowModal}
+                    setContent={setServices}
+                    content={services}
+                    setModal={setShowModal}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    setEditIndex={setEditIndex}
+                    editIndex={editIndex}
+                />
+            );
+        }
+        return null;
+    };
+
+    const modalSelection = () => {
+        if(selected === "Employees"){
+            console.log(selected);
+            setShowEmployeeModal(true);
+            
+            
+        }
+        else{
+            setShowModal(true);
+        }
+
+    }
     
 
     
@@ -144,7 +210,7 @@ import { set } from 'mongoose';
                                     px-3 sm:px-4 md:px-6 lg:px-8
                                     py-1 sm:py-1.5 md:py-2 lg:py-2
                                     "
-                                    onClick={() => setShowModal(true)}
+                                    onClick={() => {modalSelection();}}
                                 >
                                     <FaPlus className="text-xs sm:text-sm md:text-base lg:text-lg" />
                                     {contentMap[selected]}
@@ -152,18 +218,8 @@ import { set } from 'mongoose';
                                 )}
                             </>
                         )}
-                        {showModal && (
-                            <AddServiceComponent 
-                                setShowModal={setShowModal} 
-                                setContent={setServices} 
-                                content={services}
-                                setModal={setShowModal}
-                                isEditing={isEditing}
-                                setIsEditing={setIsEditing}
-                                setEditIndex={setEditIndex}
-                                editIndex={editIndex}
-                            />
-                        )}
+                        {/* Modal for adding employee */}
+                        {renderModal()}
                      
                 </div>
                 
@@ -216,12 +272,46 @@ import { set } from 'mongoose';
                         </div>
                     )
                 }
+                {selected === "Employees" && 
+                    (
+                        <div className="w-full mt-6">
+                            <div className="overflow-x-auto">
+                            <div className="rounded-xl border border-gray-200 shadow-md overflow-hidden">
+                                <table className="min-w-full table-auto divide-y divide-gray-200 text-sm sm:text-base">
+                                <thead className={`${bgColor} text-black`}>
+                                    <tr>
+                                    <th className="px-4 py-3 text-left">Photo</th>
+                                    <th className="px-4 py-3 text-left">Full Name</th>
+                                    <th className="px-4 py-3 text-left">Email</th>
+                                    <th className="px-4 py-3 text-left">Phone</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-100">
+                                    {employees.map((item, index) => (
+                                    <tr key={index} className="hover:bg-gray-50 transition-all">
+                                        <td className="px-4 py-3"><img src={item.photo} alt={item.fullName} className='w-[50px] h-[50px] rounded-full'/></td>
+                                        <td className="px-4 py-3">{item.fullName}</td>
+                                        <td className="px-4 py-3">{item.email}</td>
+                                        <td className="px-4 py-3">{item.phone}</td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    )
+                }
                             
             </div>
             
         </div>
+
+        
         
     </div>
+
+    
     
   )
 }

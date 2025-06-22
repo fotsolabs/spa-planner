@@ -64,9 +64,9 @@ const DashBoard = ({mode, setMode}) => {
 
           </div>
           {/* settings */}
-          <div className='flex justify-center items-center p-9 bg-red-400'>
+          <div className='flex justify-center items-center p-9 '>
               <Link to="/settings">
-                  <FaCog size={35} color="blue"/>
+                  <FaCog size={35} color="gray"/>
               </Link>
           </div>
         </StickyBar>
