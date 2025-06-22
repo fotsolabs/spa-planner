@@ -70,8 +70,8 @@ const AddEmployeeComponent = ({ setShowEmpModal, employees, setEmployees }) => {
             <input
               type="tel"
               className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="123-45-678"
-              pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+              placeholder="438-927-2781"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />

@@ -19,6 +19,7 @@ const jwt_1 = __importDefault(require("@fastify/jwt"));
 const DataBase_1 = __importDefault(require("./DataBase"));
 const LoginRoute_1 = require("./LoginRoute");
 const ServiceRoutes_1 = require("./ServiceRoutes");
+const EmployeeRoutes_1 = require("./EmployeeRoutes");
 require('dotenv').config({ path: '.env' });
 class CompanyRoutes {
     constructor() {
@@ -69,6 +70,7 @@ class CompanyRoutes {
         }));
         this.fastify.register(LoginRoute_1.loginRoutePlugin, { prefix: '/api/v1' });
         this.fastify.register(ServiceRoutes_1.serviceRoutePlugin, { prefix: '/api/v1' });
+        this.fastify.register(EmployeeRoutes_1.employeeRoutePlugin, { prefix: '/api/v1' });
     }
 }
 exports.default = CompanyRoutes;
