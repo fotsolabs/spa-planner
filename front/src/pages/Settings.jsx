@@ -15,6 +15,7 @@ import AddServiceComponent from '../components/AddServiceComponent';
 import EditServiceComponent from '../components/EditServiceComponent';
 import  ServiceApi from '../api/ServiceApi';
 import AddEmployeeComponent from '../components/AddEmployeeComponent';
+import TableComponent from '../components/TableComponent';
 
 import { set } from 'mongoose';
 
@@ -163,14 +164,8 @@ import { set } from 'mongoose';
     }
 
     const deleteService =  async (index,item) => {
-        const service = {
-            serviceName: item.serviceName,
-            duration: item.duration,
-            price: item.price,
-            category: item.category
-        };
         try{
-            const response =  await ServiceApi.deleteService(service);
+            const response =  await ServiceApi.deleteService(services[index]);
             console.log("Response from deleteService:", response.message);
             if(response.ok){
                 setServices(prev => prev.filter((_, i) => i !== index));
@@ -191,7 +186,6 @@ import { set } from 'mongoose';
 
     const deleteEmployee = (index) => {
         setEmployees(prev => prev.filter((_, i) => i !== index));
-        alert("Employee deleted successfully");
     }
   return (
     
@@ -260,70 +254,26 @@ import { set } from 'mongoose';
                      
                 </div>
                 
-                {selected === "Service & Pricing" && 
-                    (
-                        <div className="w-full mt-6">
-                            <div className="overflow-x-auto">
-                            <div className="rounded-xl border border-gray-200 shadow-md overflow-hidden">
-                                <table className="min-w-full table-auto divide-y divide-gray-200 text-sm sm:text-base">
-                                <thead className={`${bgColor} text-black`}>
-                                    <tr>
-                                    <th className="px-4 py-3 text-left">Service Name</th>
-                                    <th className="px-4 py-3 text-left">Duration</th>
-                                    <th className="px-4 py-3 text-left">Price</th>
-                                    <th className="px-4 py-3 text-left">Category</th>
-                                    <th className="px-4 py-3 text-left">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-100">
-                                    {services.map((item, index) => (
-                                    <tr key={index} className="hover:bg-gray-50 transition-all">
-                                        <td className="px-4 py-3">{item.serviceName}</td>
-                                        <td className="px-4 py-3">{item.duration + "min"}</td>
-                                        <td className="px-4 py-3">${item.price}</td>
-                                        <td className="px-4 py-3">{item.category}</td>
-                                        {actionButton(index,deleteService,item)}
-                                    </tr>
-                                    ))}
-                                </tbody>
-                                </table>
-                            </div>
-                            </div>
-                        </div>
-                    )
-                }
-                {selected === "Employees" && 
-                    (
-                        <div className="w-full mt-6">
-                            <div className="overflow-x-auto">
-                            <div className="rounded-xl border border-gray-200 shadow-md overflow-hidden">
-                                <table className="min-w-full table-auto divide-y divide-gray-200 text-sm sm:text-base">
-                                <thead className={`${bgColor} text-black`}>
-                                    <tr>
-                                    <th className="px-4 py-3 text-left">Photo</th>
-                                    <th className="px-4 py-3 text-left">Full Name</th>
-                                    <th className="px-4 py-3 text-left">Email</th>
-                                    <th className="px-4 py-3 text-left">Phone</th>
-                                    <th className="px-4 py-3 text-left">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-100">
-                                    {employees.map((item, index) => (
-                                    <tr key={index} className="hover:bg-gray-50 transition-all">
-                                        <td className="px-4 py-3"><img src={item.photo} alt={item.fullName} className='w-[50px] h-[50px] rounded-full'/></td>
-                                        <td className="px-4 py-3">{item.fullName}</td>
-                                        <td className="px-4 py-3">{item.email}</td>
-                                        <td className="px-4 py-3">{item.phone}</td>
-                                        {actionButton(index,deleteEmployee,item)}
-                                    </tr>
-                                    ))}
-                                </tbody>
-                                </table>
-                            </div>
-                            </div>
-                        </div>
-                    )
-                }
+                {/* Content */}
+                { selected === "Service & Pricing" && (
+                    <TableComponent
+                        headers={['Service Name', 'Duration', 'Price', 'Category', 'Actions']}
+                        data={services}
+                        bgColor={bgColor}
+                        renderRow={(item, index) => (
+                            <tr key={index} className="hover:bg-gray-50">
+                                <td className="px-4 py-3">{item.serviceName}</td>
+                                <td className="px-4 py-3">{item.duration}</td>
+                                <td className="px-4 py-3">{item.price}</td>
+                                <td className="px-4 py-3">{item.category}</td>
+                                {actionButton(index,deleteService,item)}
+                            </tr>
+                        )}
+                        
+                    
+                    />
+                    
+                )}
                             
             </div>
             

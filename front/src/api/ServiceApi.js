@@ -28,6 +28,7 @@ const BASE_URL = 'http://localhost:3000/api/v1';
     }
 
      async deleteService(service) {
+        console.log("Deleting service:", service);
         const response = await fetch(`${BASE_URL}/service`, {
             method: 'DELETE',
             headers: {

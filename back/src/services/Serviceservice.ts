@@ -61,22 +61,23 @@ export default class Serviceservice {
 
     public async deleteService(body: { serviceName: string; category: string; price: number; duration: string; }): Promise<{ success: boolean; message: string }> {
         try {
-            const service = new ServiceModel({
-                serviceName: body.serviceName,
-                category: body.category,
-                price: body.price,
-                duration: body.duration
-            });
-
+            
             const existingService = await ServiceModel.findOne(
                 {   
                     serviceName:body.serviceName,
                     category: body.category,
+                    price: body.price,
+                    duration: body.duration,
                 })
             if(!existingService) {
-                return { success: false, message: "Service already exists" };
+                return { success: false, message: "Service not found" };
             }
-            await ServiceModel.deleteOne()
+            await ServiceModel.deleteOne({
+                serviceName: body.serviceName,
+                category: body.category,
+                price: body.price,
+                duration: body.duration,
+            })
             return { success: true, message: "Service deleted successfully" };
         }
         catch (error) {
