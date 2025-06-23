@@ -16,51 +16,33 @@ import EditServiceComponent from '../components/EditServiceComponent';
 import  ServiceApi from '../api/ServiceApi';
 import AddEmployeeComponent from '../components/AddEmployeeComponent';
 import TableComponent from '../components/TableComponent';
+import EmployeeApi from '../api/EmployeeApi';
 
 import { set } from 'mongoose';
 
  const Settings = ({mode, setMode, bgColor}) => {
 
 
-    const [services , setServices] = useState([]);  
+    const [services , setServices] = useState([]);
+    const [employees, setEmployees] = useState([]);  
+    
 
-    useEffect(() => {
-        ServiceApi.getAllServices()
-        .then((data) => {
-            setServices(data.services);
-           
-        })
-        .catch((error) => {
-            console.error("Error fetching services:", error);
-        });
-    }, []);
+    const fetchData = async (apiFunc, setter, label) => {
+        try {
+          const data = await apiFunc();
+          setter(data[label]);
+        } catch (error) {
+          console.error(`Error fetching ${label}:`, error);
+        }
+      };
+      
+      useEffect(() => {
+        fetchData(ServiceApi.getAllServices, setServices, 'services');
+        fetchData(EmployeeApi.getAllEmployees, setEmployees, 'employees');
+      }, []);
 
-    const employeesContent = [
-        {   
-            photo: 'https://via.placeholder.com/50',
-            fullName: 'John Doe',
-            email:'fotsoguiffo8@gmail.com',
-            phone: '123-456-7890'
 
-        },
-        {   
-            photo: 'https://via.placeholder.com/50',
-            fullName: 'Jessica Smith',
-            email:'fotsoguiffo8@gmail.com',
-            phone: '123-456-7890'
-
-        },
-        {   
-            photo: 'https://via.placeholder.com/50',
-            fullName: 'paul Johnson',
-            email:'paul@gmail.com',
-            phone: '123-456-7890'
-
-        },
-
-    ]
-
-    const [employees, setEmployees] = useState(employeesContent);
+    
 
     const divRefs = useRef([]);
     const [selectedIndex, setSelectedIndex] = useState(1);
@@ -255,6 +237,7 @@ import { set } from 'mongoose';
                 </div>
                 
                 {/* Content */}
+
                 { selected === "Service & Pricing" && (
                     <TableComponent
                         headers={['Service Name', 'Duration', 'Price', 'Category', 'Actions']}
@@ -273,6 +256,26 @@ import { set } from 'mongoose';
                     
                     />
                     
+                )}
+                { selected === "Employees" && (
+                    <TableComponent
+                        headers={['Photo', 'Full Name', 'Email', 'Phone', 'Actions']}
+                        data={employees}
+                        bgColor={bgColor}
+                        renderRow={(item, index) => (
+                            <tr key={index} className="hover:bg-gray-50">
+                                <td className="px-4 py-3">
+                                    <img src={item.photo} alt="Employee" className="w-12 h-12 rounded-full" />
+                                </td>
+                                <td className="px-4 py-3">{item.fullName}</td>
+                                <td className="px-4 py-3">{item.email}</td>
+                                <td className="px-4 py-3">{item.phone}</td>
+                                {actionButton(index,deleteEmployee,item)}
+                            </tr>
+                        )}
+                        
+                    
+                    />
                 )}
                             
             </div>

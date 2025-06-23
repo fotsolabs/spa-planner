@@ -14,7 +14,7 @@ export default class EmployeeRoutes {
     public routes() {
         this.fastify.get('/employees', async (req, res) => {
             const employees = await this.employeeService.getAllEmployees();
-            res.status(200).send({ message: 'List of employees' });
+            res.status(200).send({ message: 'List of employees', employees: employees.employees });
         });
 
         this.fastify.post('/employee', async (req, res) => {

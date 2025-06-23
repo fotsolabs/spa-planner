@@ -26,7 +26,7 @@ describe('CompanyRoutes', () => {
             url: '/api/v1/employees'
         });
         expect(response.statusCode).toBe(200);
-        console.log(response.json().message);
+        console.log("these are the employees",response.json().employees);
     })
 
 
@@ -36,9 +36,9 @@ describe('CompanyRoutes', () => {
             method: 'POST',
             url: '/api/v1/employee',
             payload: {
-                fullName: 'Jane Smith',
-                email: 'janesmith@gmail.com',
-                phone: '123-456-7890',
+                fullName: 'Larry Smith',
+                email: 'Larrysmith@gmail.com',
+                phone: '438-456-7890',
             }
         });
         expect(response.statusCode).toBe(201);
