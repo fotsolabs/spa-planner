@@ -95,6 +95,32 @@ import { set } from 'mongoose';
         }
         return null;
     };
+    
+
+
+    const actionButton = (index,method,item) => {
+       return ( 
+            <td className="px-4 py-3">
+                    <div className="flex gap-3 items-center">
+                        <button className="text-blue-600 hover:text-blue-800">
+                        <FiEdit2 size={18}
+                        onClick={() => {
+                            setEditIndex(index);
+                            setIsEditing(true);
+                            setShowModal(true); }}
+                        />
+                        </button>
+                        <button 
+                        className="text-red-600 hover:text-red-800"
+                        onClick={() => method(index,item)}
+                        >
+                        <PiTrashSimpleLight size={18} />
+                        </button>
+                    </div>
+            </td>
+            
+        )
+    }
 
     const modalSelection = () => {
         if(selected === "Employees"){
@@ -136,7 +162,13 @@ import { set } from 'mongoose';
         setSelectedIndex(index);
     }
 
-    const deleteService =  async (index,service) => {
+    const deleteService =  async (index,item) => {
+        const service = {
+            serviceName: item.serviceName,
+            duration: item.duration,
+            price: item.price,
+            category: item.category
+        };
         try{
             const response =  await ServiceApi.deleteService(service);
             console.log("Response from deleteService:", response.message);
@@ -155,6 +187,11 @@ import { set } from 'mongoose';
         }
         
         
+    }
+
+    const deleteEmployee = (index) => {
+        setEmployees(prev => prev.filter((_, i) => i !== index));
+        alert("Employee deleted successfully");
     }
   return (
     
@@ -245,24 +282,7 @@ import { set } from 'mongoose';
                                         <td className="px-4 py-3">{item.duration + "min"}</td>
                                         <td className="px-4 py-3">${item.price}</td>
                                         <td className="px-4 py-3">{item.category}</td>
-                                        <td className="px-4 py-3">
-                                        <div className="flex gap-3 items-center">
-                                            <button className="text-blue-600 hover:text-blue-800">
-                                            <FiEdit2 size={18}
-                                            onClick={() => {
-                                                setEditIndex(index);
-                                                setIsEditing(true);
-                                                setShowModal(true); }}
-                                             />
-                                            </button>
-                                            <button 
-                                            className="text-red-600 hover:text-red-800"
-                                            onClick={() => deleteService(index,{serviceName: item.serviceName, duration: item.duration, price: item.price, category: item.category})}
-                                            >
-                                            <PiTrashSimpleLight size={18} />
-                                            </button>
-                                        </div>
-                                        </td>
+                                        {actionButton(index,deleteService,item)}
                                     </tr>
                                     ))}
                                 </tbody>
@@ -284,6 +304,7 @@ import { set } from 'mongoose';
                                     <th className="px-4 py-3 text-left">Full Name</th>
                                     <th className="px-4 py-3 text-left">Email</th>
                                     <th className="px-4 py-3 text-left">Phone</th>
+                                    <th className="px-4 py-3 text-left">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-100">
@@ -293,6 +314,7 @@ import { set } from 'mongoose';
                                         <td className="px-4 py-3">{item.fullName}</td>
                                         <td className="px-4 py-3">{item.email}</td>
                                         <td className="px-4 py-3">{item.phone}</td>
+                                        {actionButton(index,deleteEmployee,item)}
                                     </tr>
                                     ))}
                                 </tbody>
