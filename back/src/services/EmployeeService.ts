@@ -25,6 +25,7 @@ export default class EmployeeService {
         }
     }
 
+
     public async addEmployee(body: { photo: string; fullName: string; email: string; phone: string; }) {
         if (!EmployeeModel) {
             return { success: false, message: "Employee model not available" };
@@ -48,6 +49,24 @@ export default class EmployeeService {
         } catch (error) {
             console.error("Error saving employee:", error);
             return { success: false, message: "Failed to add employee" };
+        }
+    }
+
+    public async deleteEmployee(body:{photo: string, fullName: string, email: string, phone: string}): Promise<{ success: boolean, message: string }> {
+        if (!EmployeeModel) {
+            return { success: false, message: "Employee model not available" };
+        }
+
+        try {
+            const employee = await EmployeeModel.findOneAndDelete({ email: body.email });
+            if (employee) {
+                return { success: true, message: "Employee deleted successfully" };
+            } else {
+                return { success: false, message: "Employee not found" };
+            }
+        } catch (error) {
+            console.error("Error deleting employee:", error);
+            return { success: false, message: "Failed to delete employee" };
         }
     }
 }

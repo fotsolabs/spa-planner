@@ -16,6 +16,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const fastify_1 = __importDefault(require("fastify"));
 const cors_1 = __importDefault(require("@fastify/cors"));
 const jwt_1 = __importDefault(require("@fastify/jwt"));
+const multipart_1 = __importDefault(require("@fastify/multipart"));
 const DataBase_1 = __importDefault(require("./DataBase"));
 const LoginRoute_1 = require("./LoginRoute");
 const ServiceRoutes_1 = require("./ServiceRoutes");
@@ -25,7 +26,10 @@ class CompanyRoutes {
     constructor() {
         this.databaseUrl = process.env.MONGODB_URL || '';
         dotenv_1.default.config(); // Ensure environment variables are loaded at the start
-        this.fastify = (0, fastify_1.default)({ logger: true });
+        this.fastify = (0, fastify_1.default)({
+            logger: true,
+            bodyLimit: 10 * 1024 * 1024, // 10 MB
+        });
         this.dataBase = new DataBase_1.default(this.databaseUrl);
         this.registerPlugins(); // Register plugins before starting the server
         this.init(); // Initialize the server
@@ -44,13 +48,14 @@ class CompanyRoutes {
     }
     listen() {
         const port = process.env.PORT || 3000;
-        this.fastify.listen(port, (err, address) => {
-            if (err) {
-                console.error(err);
-                process.exit(1);
-            }
+        try {
+            const address = this.fastify.listen({ port: Number(port) });
             console.log(`Server is running at ${address}`);
-        });
+        }
+        catch (error) {
+            console.error('Error starting the server:', error);
+            process.exit(1); // Exit the process if server fails to start
+        }
     }
     registerPlugins() {
         this.fastify.register(cors_1.default, {
@@ -62,6 +67,11 @@ class CompanyRoutes {
         });
         this.fastify.register(jwt_1.default, {
             secret: process.env.SECRET_KEY || 'supersecret'
+        });
+        this.fastify.register(multipart_1.default, {
+            limits: {
+                fileSize: 10 * 1024 * 1024 // 10 MB
+            }
         });
     }
     routes() {

@@ -148,7 +148,7 @@ import { set } from 'mongoose';
     const deleteService =  async (index,item) => {
         try{
             const response =  await ServiceApi.deleteService(services[index]);
-            console.log("Response from deleteService:", response.message);
+            console.log("Response from deleteService:", response);
             if(response.ok){
                 setServices(prev => prev.filter((_, i) => i !== index));
 
@@ -166,8 +166,25 @@ import { set } from 'mongoose';
         
     }
 
-    const deleteEmployee = (index) => {
-        setEmployees(prev => prev.filter((_, i) => i !== index));
+    const deleteEmployee = async (index) => {
+        try{
+            const response = await EmployeeApi.deleteEmployee(employees[index]);
+            console.log("Response from deleteEmployee:", response);
+            if(response.ok){
+                setEmployees(prev => prev.filter((_, i) => i !== index));
+
+            }
+            else{
+                console.error("Failed to delete employee:", response.message);
+                alert("Failed to delete employee. Please try again.");
+            }
+            
+        }
+        catch (error) {
+            console.error("Error deleting employee:", error);
+            alert("An error occurred while deleting the employee.");
+        }
+        
     }
   return (
     

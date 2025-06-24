@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import Fastify, { FastifyInstance } from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
+import fastifyMultipart from '@fastify/multipart';
 import DataBase from './DataBase';
 import { loginRoutePlugin } from './LoginRoute';
 import { serviceRoutePlugin } from './ServiceRoutes';
@@ -15,7 +16,10 @@ export default class CompanyRoutes {
 
     constructor() {
         dotenv.config();  // Ensure environment variables are loaded at the start
-        this.fastify = Fastify({ logger: true });
+        this.fastify = Fastify({ 
+            logger: true, 
+            bodyLimit: 10 * 1024 * 1024, // 10 MB
+        });
         this.dataBase = new DataBase(this.databaseUrl);
         this.registerPlugins();  // Register plugins before starting the server
         this.init();  // Initialize the server
@@ -36,14 +40,16 @@ export default class CompanyRoutes {
 
     public listen() {
         const port = process.env.PORT || 3000;
-        this.fastify.listen(port, (err, address) => {
-            if (err) {
-                console.error(err);
-                process.exit(1);
-            }
+        try{
+            const address = this.fastify.listen({ port: Number(port) });
             console.log(`Server is running at ${address}`);
-        });
+        }
+        catch (error) {
+            console.error('Error starting the server:', error);
+            process.exit(1);  // Exit the process if server fails to start
+        }
     }
+
 
     private registerPlugins() {
         this.fastify.register(fastifyCors, {
@@ -57,6 +63,14 @@ export default class CompanyRoutes {
         this.fastify.register(fastifyJwt, {
             secret: process.env.SECRET_KEY || 'supersecret'
         });
+
+        this.fastify.register(fastifyMultipart, {
+            limits: {
+                fileSize: 10 * 1024 * 1024 // 10 MB
+            }
+        });
+
+        
     }
 
     private routes() {

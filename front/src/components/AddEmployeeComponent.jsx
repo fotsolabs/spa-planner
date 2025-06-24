@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import EmployeeApi from '../api/EmployeeApi';
 
 const AddEmployeeComponent = ({ setShowEmpModal, employees, setEmployees }) => {
   const [Name, setName] = useState('');
@@ -33,8 +34,15 @@ const AddEmployeeComponent = ({ setShowEmpModal, employees, setEmployees }) => {
       phone
     };
 
-    setEmployees((prev) => [...prev, newEmployee]);
-    setShowEmpModal(false);
+    try{
+      const res = EmployeeApi.addEmployee(newEmployee)
+      console.log("Employee added successfully:", res);
+      setEmployees((prev) => [...prev, newEmployee]);
+      setShowEmpModal(false);
+    }
+    catch (error) {
+      console.error("Error adding employee:", error);
+    }
   };
 
   return (

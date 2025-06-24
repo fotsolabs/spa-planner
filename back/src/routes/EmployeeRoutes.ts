@@ -23,10 +23,11 @@ export default class EmployeeRoutes {
             res.status(201).send({ message: 'Employee added successfully' });
         });
 
-        this.fastify.delete('/employee/:id', async (req, res) => {
+        this.fastify.delete('/employee', async (req, res) => {
             // Logic to delete an employee by ID
-            const { id } = req.params as { id: string };
-            res.status(200).send({ message: `Employee with ID ${id} deleted` });
+            const body = req.body as {photo: string, fullName: string, email: string, phone: string};
+            const msg = await this.employeeService.deleteEmployee(body);
+            res.status(200).send({ ok:true, message: `Employee with name ${body.fullName} deleted`});
         });
     }
 }
