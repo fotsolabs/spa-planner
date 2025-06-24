@@ -14,7 +14,7 @@ import { PiTrashSimpleLight } from "react-icons/pi";
 import AddServiceComponent from '../components/AddServiceComponent';
 import EditServiceComponent from '../components/EditServiceComponent';
 import  ServiceApi from '../api/ServiceApi';
-import AddEmployeeComponent from '../components/AddEmployeeComponent';
+import AddEmployeeComponent from '../components/modals/AddEmployeeComponent';
 import TableComponent from '../components/TableComponent';
 import EmployeeApi from '../api/EmployeeApi';
 

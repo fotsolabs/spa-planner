@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import EmployeeApi from '../api/EmployeeApi';
+import EmployeeApi from '../../api/EmployeeApi';
 
 const AddEmployeeComponent = ({ setShowEmpModal, employees, setEmployees }) => {
   const [Name, setName] = useState('');

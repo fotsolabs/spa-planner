@@ -53,6 +53,7 @@ const DashBoard = ({mode, setMode}) => {
     setEditingEvent(event);
     
   }
+const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
       <LogNav mode = {mode} setMode={setMode}/>
