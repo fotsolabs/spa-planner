@@ -61,7 +61,6 @@ const EventModal = ({ setMyEvents, setShowEventModal, services = [] }) => {
         <h2 className='text-center text-2xl font-semibold mb-6'>Add New Event</h2>
 
         <form className='space-y-6' onSubmit={handleSubmit}>
-          <InputField label="Title" value={title} setValue={setTitle} placeholder="Meeting with client" required />
           <InputField label="Client Name" value={clientName} setValue={setClientName} placeholder="John Doe" />
           
           {/* Service Dropdown Select */}
