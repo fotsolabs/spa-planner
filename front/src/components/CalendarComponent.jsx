@@ -11,13 +11,16 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 
 
-const CalendarComponent = ({localizer, events, setEditingEvent,setMyEvents ,handleClickEvent}) => {
+const CalendarComponent = ({localizer, events, setEditingEvent,setMyEvents ,handleClickEvent,handleSlotSelect}) => {
 
 
     
     const [draggedEvent, setDraggedEvent] = useState();
     const [displayDragItemInCell, setDisplayDragItemCell] = useState(true);
     const [counters, setCounters] = useState({item1: 0, items2: 0});
+    
+
+    
     
 
     const eventPropGetter = useCallback(
@@ -126,7 +129,7 @@ const CalendarComponent = ({localizer, events, setEditingEvent,setMyEvents ,hand
                 onEventDrop={moveEvent}
                 resizable
                 onEventResize={resizeEvent}
-                onSelectSlot={newEvent}
+                onSelectSlot={handleSlotSelect}
                 onSelectEvent={handleClickEvent}
                 selectable
                 // displays the service and the price  

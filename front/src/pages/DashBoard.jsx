@@ -1,14 +1,18 @@
-import React, {useState} from 'react'
+import React, {useState,useCallback,useEffect} from 'react'
 import LogNav from '../components/LogNav'
 import CalendarComponent from '../components/CalendarComponent'
 
 import { dateFnsLocalizer } from 'react-big-calendar'
-import { format, parse, startOfWeek, getDay } from 'date-fns'
+import { format, parse, startOfWeek, getDay, set } from 'date-fns'
 import enUS from 'date-fns/locale/en-US'; 
 import { EventChangePopUP } from '../components/EventChangePopUP'
 import StickyBar from '../components/StickyBar'
 import { FaCog } from 'react-icons/fa'; // Font Awesome Gear Icon
 import { Link } from 'react-router-dom';
+import EventModal from '../components/modals/EventModal'
+import PageUtils from './utils/PageUtils'
+import { use } from 'react'
+import ServiceApi from '../api/ServiceApi'
 
 const locales = {
   'en-Us': enUS,
@@ -37,6 +41,7 @@ const events = [
   },
 ];
 
+
 const localizer = dateFnsLocalizer({
   format,
   parse,
@@ -45,14 +50,42 @@ const localizer = dateFnsLocalizer({
   locales
 })
 
+
+
+
 const DashBoard = ({mode, setMode}) => {
+  
+  const [services, setServices] = useState([]);
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await ServiceApi.getAllServices();
+        console.log("Fetched services:", response.services);
+        setServices(response.services);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+        setServices([]);
+      }
+    }
+    fetchServices();
+  }, []);
+
   const [editingEvent, setEditingEvent] = useState(null);
    // Helps to change the title of the event when it is clicked
    const [myEvents, setMyEvents] = useState(events); 
+   const [showEventModal, setShowEventModal] = useState(false);
+   const [selectedSlot, setSelectedSlot] = useState(null);
+
    const handleClickEvent = (event) => {
     setEditingEvent(event);
     
-  }
+   }
+const handleSlotSelect = useCallback((slotInfo) => {
+    setSelectedSlot(slotInfo);
+    setShowEventModal(true);
+    // This function can be used to open a modal to add a new event
+    // You can pass the slotInfo to the modal to pre-fill the start and end time
+}, []);
 const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
@@ -80,6 +113,8 @@ const [modalOpen, setModalOpen] = useState(false);
           setMyEvents={setMyEvents}
           setEditingEvent={setEditingEvent} 
           handleClickEvent={handleClickEvent}
+          handleSlotSelect={handleSlotSelect}
+
         />
         </div>
       </div>
@@ -95,8 +130,16 @@ const [modalOpen, setModalOpen] = useState(false);
           onClose={() => setEditingEvent(null)}
         />
       )}
-      
-      
+
+      {showEventModal && selectedSlot && (
+        <EventModal
+          setMyEvents={setMyEvents}
+          setShowEventModal = {setShowEventModal}
+          services={services}
+          slotInfo={selectedSlot}
+        />
+      )}
+
       
     </>
   )

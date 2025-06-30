@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import ServiceApi from '../api/ServiceApi';
+import ServiceApi from '../../api/ServiceApi';
 
 const AddServiceComponent = ({ content, setContent, setModal,isEditing,editIndex,setIsEditing,setEditIndex }) => {
   // State to store the form data

@@ -11,14 +11,14 @@ import TitleComponent from '../components/TitleComponent';
 import SlideBarComponent from '../components/SlideBarComponent';
 import { FiEdit2 } from "react-icons/fi";
 import { PiTrashSimpleLight } from "react-icons/pi";
-import AddServiceComponent from '../components/AddServiceComponent';
+import AddServiceComponent from '../components/modals/AddServiceComponent';
 import EditServiceComponent from '../components/EditServiceComponent';
 import  ServiceApi from '../api/ServiceApi';
 import AddEmployeeComponent from '../components/modals/AddEmployeeComponent';
 import TableComponent from '../components/TableComponent';
 import EmployeeApi from '../api/EmployeeApi';
-
-import { set } from 'mongoose';
+import PageUtils from './utils/PageUtils';
+import instance from './utils/PageUtils';
 
  const Settings = ({mode, setMode, bgColor}) => {
 
@@ -39,7 +39,7 @@ import { set } from 'mongoose';
       useEffect(() => {
         fetchData(ServiceApi.getAllServices, setServices, 'services');
         fetchData(EmployeeApi.getAllEmployees, setEmployees, 'employees');
-      }, []);
+    }, []);
 
 
     
