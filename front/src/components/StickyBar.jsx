@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const StickyBar = ({children, bgColor}) => {
   return (
-    <div className={`w-30 h-full ${bgColor} sticky top-0 flex flex-col`}>
+    <div className={`w-30 h-full ${bgColor} sticky top-0 flex flex-col  `}>
         {children}
     </div>
   )

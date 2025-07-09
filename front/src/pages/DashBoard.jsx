@@ -13,33 +13,112 @@ import EventModal from '../components/modals/EventModal'
 import PageUtils from './utils/PageUtils'
 import { use } from 'react'
 import ServiceApi from '../api/ServiceApi'
+import { Email, Phone, Photo } from '@mui/icons-material'
 
 const locales = {
   'en-Us': enUS,
 };
 const date = new Date();
-const events = [
+const events1 = [
   {
     id: 1,
     title: 'Cleaning Service',
-    start: new Date(2025, 3, 15, 13, 50),
-    end: new Date(2025, 1, 15, 16, 0),
+    start: new Date(2025, 6, 9, 13, 50), // July is month 6 (0-based)
+    end: new Date(2025, 6, 9, 16, 0),
     allDay: false,
     isDraggable: true,
     clientName: 'John Doe',
-    price : 100,
+    price: 100,
   },
   {
     id: 2,
     title: 'Massage',
-    start: new Date(2025, 5, 18, 10, 0),
-    end: new Date(2025, 5, 18, 19, 0),
+    start: new Date(2025, 6, 9, 10, 0),
+    end: new Date(2025, 6, 9, 19, 0),
     allDay: false,
     isDraggable: true,
     clientName: 'Jane Smith',
-    price : 150,
+    price: 150,
   },
 ];
+
+const events2 = [
+  {
+    id: 1,
+    title: 'Cleaning Service',
+    start: new Date(2025, 6, 8, 13, 50), // July is month 6 (0-based)
+    end: new Date(2025, 6, 8, 16, 0),
+    allDay: false,
+    isDraggable: true,
+    clientName: 'John Doe',
+    price: 100,
+  },
+  {
+    id: 2,
+    title: 'Massage',
+    start: new Date(2025, 6, 7, 10, 0),
+    end: new Date(2025, 6, 7, 19, 0),
+    allDay: false,
+    isDraggable: true,
+    clientName: 'Jane Smith',
+    price: 150,
+  },
+];
+
+const events3 = [
+  {
+    id: 1,
+    title: 'Cleaning Service',
+    start: new Date(2025, 6, 10, 13, 50), // July is month 6 (0-based)
+    end: new Date(2025, 6, 10, 16, 0),
+    allDay: false,
+    isDraggable: true,
+    clientName: 'John Doe',
+    price: 100,
+  },
+  {
+    id: 2,
+    title: 'Massage',
+    start: new Date(2025, 6, 11, 10, 0),
+    end: new Date(2025, 6, 11, 19, 0),
+    allDay: false,
+    isDraggable: true,
+    clientName: 'Jane Smith',
+    price: 150,
+  },
+];
+
+const allEvents = [ ...events1, ...events2, ...events3 ];
+
+
+const employees = [
+  {
+    photo: 'https://example.com/photo1.jpg',
+    fullName: 'John Doe',
+    email: 'johno@ReportGmailerrorred.com',
+    phone: '+1234567890',
+    events: events1,
+  },
+  {
+    photo: 'https://example.com/photo2.jpg',
+    fullName: 'Jane Smith',
+    email:'JaneSmith@gmail.com',
+    phone: '+0987654321',
+    events: events2,
+
+  },
+  {
+    photo: 'https://example.com/photo3.jpg',
+    fullName: 'Alice Johnson',
+    email:"AliceJohnson@mgmail.com",
+    phone: '+1122334455',
+    events: events3,
+  }
+]
+
+
+
+
 
 
 const localizer = dateFnsLocalizer({
@@ -54,8 +133,14 @@ const localizer = dateFnsLocalizer({
 
 
 const DashBoard = ({mode, setMode}) => {
-  
+  const changeEvents = (employee) => {
+    console.log("Changing events for employee:", employee);
+    const selectedEmployee = employees.find(emp => emp.fullName === employee);
+    setEmployee(selectedEmployee);
+    setMyEvents(selectedEmployee.events);
+  }
   const [services, setServices] = useState([]);
+  const [employee, setEmployee] = useState(employees[0]); // Default to the first employee
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -72,7 +157,7 @@ const DashBoard = ({mode, setMode}) => {
 
   const [editingEvent, setEditingEvent] = useState(null);
    // Helps to change the title of the event when it is clicked
-   const [myEvents, setMyEvents] = useState(events); 
+   const [myEvents, setMyEvents] = useState(employee.events); 
    const [showEventModal, setShowEventModal] = useState(false);
    const [selectedSlot, setSelectedSlot] = useState(null);
 
@@ -93,9 +178,25 @@ const [modalOpen, setModalOpen] = useState(false);
       <div className='flex h-full'>
         {/* StickyBar  */}
         <StickyBar bgColor={"bg-stickyBarBg"}>
+          {/* Employee selector */}
+          <div className='flex justify-center  items-center p-9 pb-3 '>
+              <select className='bg-white px-8 py-1 rounded-md ' onChange={(e) => changeEvents(e.target.value)}>
+                {employees.map((employee, index) => (
+                  <option key={index} value={employee.fullName}>
+                    {employee.fullName}
+                  </option>
+                ))}
+              </select>
+          </div>
           {/* photo */}
-          <div className=' bg-white w-6 h-5 rounded-full p-9 m-4 shadow-xs'>
-
+          <div className='flex justify-center'>
+              <div className='relative flex justify-center items-center bg-white w-6 h-5 rounded-md px-[6rem] py-12 p-9 m-4 shadow-xs overflow-hidden'>
+                    <img 
+                      src='../../public/vite.svg'
+                      alt={employee.fullName} 
+                      className='absolute inset-0 w-full h-full object-cover z-0' 
+                    />
+              </div>
           </div>
           {/* settings */}
           <div className='flex justify-center items-center p-9 '>
