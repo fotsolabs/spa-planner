@@ -1,4 +1,5 @@
 import mongoose,{Document,Schema} from "mongoose";
+import { IEvent } from "./EventModel"; // Importing the IEvent interface for reference
 
 
 interface IEmployee extends Document {
@@ -6,6 +7,7 @@ interface IEmployee extends Document {
     fullName: string;
     email: string;
     phone: string;
+    events?: mongoose.Types.ObjectId[] | IEvent[]; // Optional field for related events
     
 }
 
@@ -31,7 +33,12 @@ const EmployeeSchema = new Schema(
             type: String, 
             required: true,
             unique: true
-        }
+        },
+        events: [{ 
+            type: mongoose.Types.ObjectId, 
+            ref: 'Event' // Reference to the Event model
+        }]
+
     }
 );
 

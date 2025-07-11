@@ -36,9 +36,33 @@ describe('CompanyRoutes', () => {
             method: 'POST',
             url: '/api/v1/employee',
             payload: {
+                photo: 'https://example.com/photo.jpg',
                 fullName: 'Larry Smith',
                 email: 'Larrysmith@gmail.com',
                 phone: '438-456-7890',
+                events: [
+                    {
+                        id: 1,
+                        title: 'Cleaning Service',
+                        start: new Date(2025, 6, 10, 13, 50), // July is month 6 (0-based)
+                        end: new Date(2025, 6, 10, 16, 0),
+                        allDay: false,
+                        isDraggable: true,
+                        clientName: 'John Doe',
+                        price: 100,
+                    },
+                    {
+                        id: 2,
+                        title: 'Massage',
+                        start: new Date(2025, 6, 11, 10, 0),
+                        end: new Date(2025, 6, 11, 19, 0),
+                        allDay: false,
+                        isDraggable: true,
+                        clientName: 'Jane Smith',
+                        price: 150,
+                    }, 
+                ] // Assuming you want to add an empty array for events
+               
             }
         });
         expect(response.statusCode).toBe(201);

@@ -1,6 +1,7 @@
 import { FastifyPluginAsync, FastifyPluginCallback } from 'fastify';
 import { FastifyInstance } from 'fastify';
 import EmployeeService from '../services/EmployeeService';
+import { IEvent } from '../models/EventModel';
 
 export default class EmployeeRoutes {
     private fastify: FastifyInstance;
@@ -18,7 +19,7 @@ export default class EmployeeRoutes {
         });
 
         this.fastify.post('/employee', async (req, res) => {
-            const body = req.body as {photo: string, fullName: string, email: string, phone: string};
+            const body = req.body as {photo: string, fullName: string, email: string, phone: string, events?:IEvent[]};
             const msg = await this.employeeService.addEmployee(body);
             res.status(201).send({ message: 'Employee added successfully' });
         });
