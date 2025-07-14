@@ -10,7 +10,7 @@ interface IEvent extends Document {
   clientName: string;
   price: number;
 }
-const EventSchema = new Schema(
+const EventSchema = new Schema<IEvent>(
   {
     id: { type: Number, required: true },
     title: { type: String, required: true },

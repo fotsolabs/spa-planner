@@ -3,7 +3,18 @@ import { FastifyInstance } from "fastify";
 import { IEvent,EventModel } from "../models/EventModel";
 
 
+// Payload interface
+interface IEmployeePayload {
+  photo?: string | null;
+  fullName: string;
+  email: string;
+  phone: string;
+  signature?: string | null; // Optional field for employee signature
+  events?: IEvent[]; // Array of events associated with the employee
+}
+
 export default class EmployeeService {
+ 
     
 
     private fastify: FastifyInstance;
@@ -28,48 +39,29 @@ export default class EmployeeService {
     }
 
 
+    public async addEmployee(body: IEmployeePayload): Promise<{ success: boolean, message: string, employee?: IEmployee }> {
+        if (!EmployeeModel) {
+            return { success: false, message: "Employee model not available" };
+        }
 
-public async addEmployee(body: {
-  photo: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  events?: IEvent[];
-}): Promise<{ success: boolean; message: string }> {
-  if (!EmployeeModel) {
-    return { success: false, message: "Employee model not available" };
-  }
+        try {
+            const existingEmployee = await EmployeeModel.findOne({ email: body.email });
+            if (existingEmployee) {
+                return { success: false, message: "Employee with this email already exists" };
+            }
 
-  try {
-    const existingEmployee = await EmployeeModel.findOne({ email: body.email });
-    if (existingEmployee) {
-      return { success: false, message: "Employee already exists" };
+            const newEmployee = new EmployeeModel(body);
+            const savedEmployee = await newEmployee.save();
+            return { success: true, message: "Employee added successfully", employee: savedEmployee };
+        } catch (error) {
+            console.error("Error adding employee:", error);
+            return { success: false, message: "Failed to add employee" };
+        }
     }
 
-    let eventIds: string[] = [];
 
-    if (body.events && body.events.length > 0) {
-      const createdEvents = await EventModel.insertMany(body.events);
-      eventIds = createdEvents.map(event => event._id);
-    }
 
-    const employee = new EmployeeModel({
-      photo: body.photo,
-      fullName: body.fullName,
-      email: body.email,
-      phone: body.phone,
-      events: eventIds,
-    });
 
-    console.log("Saving new employee:", employee);
-    await employee.save();
-
-    return { success: true, message: "Employee added successfully" };
-  } catch (error) {
-    console.error("Error saving employee:", error);
-    return { success: false, message: "Failed to add employee" };
-  }
-}
 
 
 

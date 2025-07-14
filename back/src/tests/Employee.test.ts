@@ -68,4 +68,23 @@ describe('CompanyRoutes', () => {
         expect(response.statusCode).toBe(201);
         expect(response.json().message).toBeDefined();
     })
+
+
+    it('should add another employee via POST', async () => {
+        const response = await fastify.inject({
+            method: 'POST',
+            url: '/api/v1/employee',
+            payload: {
+                photo: 'https://example.com/photo.jpg',
+                fullName: 'claude kamga',
+                email: 'claudekamga@gmail.com',
+                phone: '514-456-7890',
+            }
+        });
+        expect(response.statusCode).toBe(201);
+        expect(response.json().message).toBeDefined();
+    })
+
+
+
 })
