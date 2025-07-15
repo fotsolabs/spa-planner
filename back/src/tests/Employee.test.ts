@@ -85,6 +85,59 @@ describe('CompanyRoutes', () => {
         expect(response.json().message).toBeDefined();
     })
 
+    it('should add the event to the employee', async () => {
+        const response = await fastify.inject({
+            method: 'PUT',
+            url: '/api/v1/employee/fotsoguiffo8@gmail.com',
+            payload:{
+                events:[
+                    {
+                        id: 1,
+                        title: 'Cleaning Service',
+                        start: new Date(2025, 6, 15, 13, 50), // July is month 6 (0-based)
+                        end: new Date(2025, 6, 15, 16, 0),
+                        allDay: false,
+                        isDraggable: true,
+                        clientName: 'John Doe',
+                        price: 100,
+                    },
+                    {
+                        id: 2,
+                        title: 'Massage',
+                        start: new Date(2025, 6, 15, 10, 0),
+                        end: new Date(2025, 6, 15, 19, 0),
+                        allDay: false,
+                        isDraggable: true,
+                        clientName: 'Jane Smith',
+                        price: 150,
+                    }, 
+                ]
+            }
+        })
+        expect(response.statusCode).toBe(200);
+
+    });
+
+    it('should delete an employee via DELETE', async () => {
+        const response = await fastify.inject({
+            method: 'DELETE',
+            url: '/api/v1/employee/fotsoguiffo8@gmail.com',
+            payload: {
+                    event: {
+                        id: 1,
+                        title: 'Cleaning Service',
+                        start: new Date(2025, 6, 15, 13, 50), // July is month 6 (0-based)
+                        end: new Date(2025, 6, 15, 16, 0),
+                        allDay: false,
+                        isDraggable: true,
+                        clientName: 'John Doe',
+                        price: 100,
+                    }
+            }
+        })
+        expect(response.statusCode).toBe(200);
+    });
+
 
 
 })

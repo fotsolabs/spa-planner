@@ -13,7 +13,7 @@ import EventModal from '../components/modals/EventModal'
 import PageUtils from './utils/PageUtils'
 import { use } from 'react'
 import ServiceApi from '../api/ServiceApi'
-import { Email, Phone, Photo } from '@mui/icons-material'
+
 
 const locales = {
   'en-Us': enUS,

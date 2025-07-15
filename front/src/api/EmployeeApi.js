@@ -10,6 +10,8 @@ class EmployeeApi {
         return await response.json();
     }
 
+    
+
     async addEmployee(employee) {
         const response = await fetch(`${ApiUtils.baseUrl}/employee`, {
             method: 'POST',
